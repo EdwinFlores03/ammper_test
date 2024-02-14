@@ -1,12 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  
+  const router = useRouter();
 
   // close on click outside
   useEffect(() => {
@@ -23,6 +26,14 @@ const DropdownUser = () => {
     document.addEventListener("click", clickHandler);
     return () => document.removeEventListener("click", clickHandler);
   });
+
+  const logoutBtn = () => {
+      localStorage.removeItem('link_id');
+      localStorage.removeItem('user_data');
+      localStorage.removeItem('belvo_token');
+      localStorage.removeItem('isLoggedIn');
+      router.push('/');
+  };
 
   // close if the esc key is pressed
   useEffect(() => {
@@ -88,7 +99,7 @@ const DropdownUser = () => {
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={logoutBtn}>
           <svg
             className="fill-current"
             width="22"

@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import Sidebar from "../Sidebar";
 import Header from "../Header";
+import { useRouter } from "next/navigation";
 
 export default function DefaultLayout({
   children,
@@ -9,6 +10,23 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Verifica si el usuario está autenticado
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    // Si no está autenticado y no está en la página de inicio de sesión, redirige a la página de inicio de sesión
+    if (!isLoggedIn) {
+      localStorage.removeItem('link_id');
+      localStorage.removeItem('user_data');
+      localStorage.removeItem('belvo_token');
+      localStorage.removeItem('isLoggedIn');
+      router.push('/');
+    }
+  }, []);
+
   return (
     <>
     <html lang="en">
