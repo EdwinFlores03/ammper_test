@@ -18,19 +18,15 @@ export default function TableList({linkId}){
     const defaultDate = moment().format('YYYY-MM-DD');
 
     const handleChangeStart = (dateSelected) => {
-        console.log('Cambio de fecha start: '+dateSelected );
         setDefaultDateStart(dateSelected);
     };
 
     const handleChangeEnd = (dateSelected) => {
-        console.log('Cambio de fecha end: '+dateSelected );
         setDefaultDateEnd(dateSelected);
     };
 
     useEffect(() => {
-        setData([]);
-        console.log('snnn entra');
-        
+        setData([]);        
         const fetchData = async () => {
             setFlagState(true);
             const datas = await getTransactions(rowsPerPage, currentPage, linkId, defaultDateStart, defaultDateEnd);
@@ -103,7 +99,7 @@ export default function TableList({linkId}){
         );
     }
 
-    const maxPages = Math.ceil(data.count / rowsPerPage);
+    const maxPages = Math.ceil(((data.count)?data.count:0) / rowsPerPage);
     const handleClickNext = () => {
         if ((currentPage + 1) <= maxPages) {
             setCurrentPage(currentPage + 1);
@@ -164,6 +160,14 @@ export default function TableList({linkId}){
                     </tr>
                 </thead>
                 <tbody>
+                    {(data.count == 0)?
+                    <tr className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                        <th scope="row" colSpan={7} className="px-6 py-4 font-medium text-gray-300 whitespace-nowrap dark:text-white text-center">
+                            {((flagState)?'Cargando...':'Sin registros')}
+                        </th>
+                    </tr>
+                    :''}
+
                     {data.results?.map((item, index) => (
                         <tr key={index} className="border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
                             <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">

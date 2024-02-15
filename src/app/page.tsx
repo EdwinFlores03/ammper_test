@@ -10,11 +10,11 @@ export default function LoginPage(){
     const router = useRouter();
 
     const onSubmitLogin = async (formData) =>{
-      console.log("datos capturados"+ JSON.stringify(formData) );
+      // console.log("datos capturados"+ JSON.stringify(formData) );
       const {username, password} = formData;
       try {
           const response = await registerLink(username, password);
-          console.log(response);
+          // console.log(response);
           // Almacenar el token de acceso en el almacenamiento local
           localStorage.setItem('link_id', response.id);
           localStorage.setItem('user_data', JSON.stringify(response));
@@ -31,12 +31,11 @@ export default function LoginPage(){
  /*    const checkAccountExistense = async () => {
       const data = checkAccount(username, password)
       .then(isSandbox => {
-          console.log('¿La cuenta es de sandbox?', isSandbox);
+          // console.log('¿La cuenta es de sandbox?', isSandbox);
       })
       .catch(error => {
           console.error('Error:', error);
       });
-      console.log(data,'aaajdjdjdj');
   }
 */
 
