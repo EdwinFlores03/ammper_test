@@ -1,12 +1,17 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { checkOwner } from "../../utils/belvo";
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [owner, setOwner] = useState({first_name:'sss'});
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  
+  const router = useRouter();
 
   // close on click outside
   useEffect(() => {
@@ -24,6 +29,14 @@ const DropdownUser = () => {
     return () => document.removeEventListener("click", clickHandler);
   });
 
+  const logoutBtn = () => {
+      localStorage.removeItem('link_id');
+      localStorage.removeItem('user_data');
+      localStorage.removeItem('belvo_token');
+      localStorage.removeItem('isLoggedIn');
+      router.push('/');
+  };
+
   // close if the esc key is pressed
   useEffect(() => {
     const keyHandler = ({ keyCode }: KeyboardEvent) => {
@@ -33,6 +46,16 @@ const DropdownUser = () => {
     document.addEventListener("keydown", keyHandler);
     return () => document.removeEventListener("keydown", keyHandler);
   });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const dataResponse = await checkOwner(localStorage.getItem('link_id'));
+      // console.log("Owner:",JSON.stringify(dataResponse));
+      setOwner(dataResponse);
+    };
+
+    fetchData();    
+  }, []);
 
   return (
     <div className="relative">
@@ -44,9 +67,9 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            $name_user
+          {(owner && owner.length > 0 && owner[0].first_name ? owner[0].first_name+' '+ owner[0].last_name: '--')}
           </span>
-          <span className="block text-xs">$first_neme</span>
+          <span className="block text-xs">{(owner && owner.length > 0 && owner[0].second_last_name ? owner[0].second_last_name : '--')}</span>
         </span>
 
         <span className="h-12 w-12 rounded-full">
@@ -88,7 +111,7 @@ const DropdownUser = () => {
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
-        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base">
+        <button className="flex items-center gap-3.5 px-6 py-4 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base" onClick={logoutBtn}>
           <svg
             className="fill-current"
             width="22"

@@ -1,11 +1,44 @@
 // Página de inicio de sesión
 "use client";
 import Image from 'next/image';
-import { useRouter } from 'next/router';
 import React from 'react';
+import FormAuth from '../components/Login/FormAuth';
+import { useRouter } from 'next/navigation';
+import { checkAccount, registerLink } from '../utils/belvo';
 
 export default function LoginPage(){
     const router = useRouter();
+
+    const onSubmitLogin = async (formData) =>{
+      console.log("datos capturados"+ JSON.stringify(formData) );
+      const {username, password} = formData;
+      try {
+          const response = await registerLink(username, password);
+          console.log(response);
+          // Almacenar el token de acceso en el almacenamiento local
+          localStorage.setItem('link_id', response.id);
+          localStorage.setItem('user_data', JSON.stringify(response));
+          localStorage.setItem('belvo_token', '123ab');
+          localStorage.setItem('isLoggedIn', true);
+          
+          // Redirigir
+          router.push('/home');
+      } catch (error) {
+          console.error('Error de inicio de sesión:', error);
+      }
+    }
+
+ /*    const checkAccountExistense = async () => {
+      const data = checkAccount(username, password)
+      .then(isSandbox => {
+          console.log('¿La cuenta es de sandbox?', isSandbox);
+      })
+      .catch(error => {
+          console.error('Error:', error);
+      });
+      console.log(data,'aaajdjdjdj');
+  }
+*/
 
     return (
         <div className="flex flex-col items-center md:flex-row md:h-screen">
@@ -20,43 +53,7 @@ export default function LoginPage(){
                     Ingrese con una cuenta de Belvo.
                   </p>
                 </div>
-                <form className="mt-8 space-y-6" >
-                  <div>
-                    <label htmlFor="email" className="block font-bold text-gray-700">
-                      Usurio
-                    </label>
-                    <input
-                      id="email"
-                      type="email"
-                      placeholder="Ingrese usuario"
-                      className="w-full px-4 border-solid border-2 border-grey-600 py-3 mt-1 border-300 rounded-md focus:border-orange-500 focus:ring focus:ring-orange-200"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="password"
-                      className="block font-bold text-gray-700"
-                    >
-                      Password
-                    </label>
-                    <input
-                      id="password"
-                      type="password"
-                      placeholder="Ingrese la contraseña"
-                      className="w-full px-4 border-solid border-2 border-grey-600 py-3 mt-1 border-300 rounded-md focus:border-orange-500 focus:ring focus:ring-orange-200"
-                      required
-                    />
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      className="w-full px-4 py-3 font-bold text-white bg-orange-500 rounded-md hover:bg-orange-600 focus:outline-none focus:shadow-outline-orange focus:border-orange-700"
-                    >
-                      Iniciar Sesión
-                    </button>
-                  </div>
-                </form>
+                <FormAuth onSubmitForm={onSubmitLogin}/>
               </div>
             </div>
         </div>

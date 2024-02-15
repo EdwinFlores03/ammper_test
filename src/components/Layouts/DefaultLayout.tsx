@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, ReactNode } from "react";
+import React, { useState, ReactNode, useEffect } from "react";
 import Sidebar from "../Sidebar";
 import Header from "../Header";
+import { useRouter } from "next/navigation";
 
 export default function DefaultLayout({
   children,
@@ -9,10 +10,27 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    // Verifica si el usuario está autenticado
+    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+    // Si no está autenticado y no está en la página de inicio de sesión, redirige a la página de inicio de sesión
+    if (!isLoggedIn) {
+      localStorage.removeItem('link_id');
+      localStorage.removeItem('user_data');
+      localStorage.removeItem('belvo_token');
+      localStorage.removeItem('isLoggedIn');
+      router.push('/');
+    }
+  }, []);
+
   return (
-    <>
-    <html lang="en">
-      <body suppressHydrationWarning={true}>
+
+    // <html lang="en">
+    //   <body suppressHydrationWarning={true}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">
           {/* <!-- ===== Page Wrapper Start ===== --> */}
           <div className="flex h-screen overflow-hidden">
@@ -38,8 +56,7 @@ export default function DefaultLayout({
           </div>
           {/* <!-- ===== Page Wrapper End ===== --> */}
         </div>
-      </body>
-    </html>
-    </>
+    //   </body>
+    // </html>
   );
 }
