@@ -11,14 +11,11 @@ export const metadata: Metadata = {
 export default function HomePage() {
   return (
     <>
-      <DefaultLayout>
         <Breadcrumb pagePrevius="" pageName="Inicio" />
 
         <div className="flex flex-col gap-10">
           Hola inicio
-          
         </div>
-      </DefaultLayout>
     </>
   );
 }

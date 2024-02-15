@@ -62,7 +62,7 @@ const Header = (props: {
               height={60}
               src={"/images/ammper-logo.png"}
               alt="Logo"
-              priority
+              priority={true}
               style={{ width: "auto", height: "auto" }}
             />
           </Link>

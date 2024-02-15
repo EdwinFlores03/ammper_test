@@ -8,6 +8,7 @@ import { checkAccount, registerLink } from '../utils/belvo';
 
 export default function LoginPage(){
     const router = useRouter();
+
     const onSubmitLogin = async (formData) =>{
       console.log("datos capturados"+ JSON.stringify(formData) );
       const {username, password} = formData;
@@ -16,11 +17,11 @@ export default function LoginPage(){
           console.log(response);
           // Almacenar el token de acceso en el almacenamiento local
           localStorage.setItem('link_id', response.id);
-          localStorage.setItem('user_data', response);
+          localStorage.setItem('user_data', JSON.stringify(response));
           localStorage.setItem('belvo_token', '123ab');
           localStorage.setItem('isLoggedIn', true);
           
-          // Redirigir a la página protegida
+          // Redirigir
           router.push('/home');
       } catch (error) {
           console.error('Error de inicio de sesión:', error);

@@ -28,9 +28,9 @@ export default function DefaultLayout({
   }, []);
 
   return (
-    <>
-    <html lang="en">
-      <body suppressHydrationWarning={true}>
+
+    // <html lang="en">
+    //   <body suppressHydrationWarning={true}>
         <div className="dark:bg-boxdark-2 dark:text-bodydark">
           {/* <!-- ===== Page Wrapper Start ===== --> */}
           <div className="flex h-screen overflow-hidden">
@@ -56,8 +56,7 @@ export default function DefaultLayout({
           </div>
           {/* <!-- ===== Page Wrapper End ===== --> */}
         </div>
-      </body>
-    </html>
-    </>
+    //   </body>
+    // </html>
   );
 }

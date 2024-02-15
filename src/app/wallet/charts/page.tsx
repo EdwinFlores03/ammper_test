@@ -11,9 +11,7 @@ export const metadata: Metadata = {
 export default function ChartsPage() {
   return (
     <>
-      <DefaultLayout>
-         Vista de graficas
-      </DefaultLayout>
+      Vista de graficas
     </>
   );
 }

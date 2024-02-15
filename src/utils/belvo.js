@@ -96,3 +96,54 @@ export const registerLink = async (username, password) => {
       return [];
     }
 };
+
+export const getTransactions = async (rowsPerPage, page, linkId, startDate, endDate) => {
+      const options = {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(`${BELVO_CLIENT_ID}:${BELVO_SECRET_KEY}`)
+        })
+      };
+ 
+     try {      
+        const response = await fetch(BELVO_BASE_URL+'/transactions/?page_size='+rowsPerPage+'&page='+page+'&link='+linkId+'&value_date__range=' + startDate + ',' + endDate, options);
+        if (!response.ok) {
+          throw new Error('Error al obtener transacciones');
+        }
+        return await response.json();
+     } catch (error) {
+        console.error(error, "Error al obtener transacciones");
+        throw error;
+        return [];
+     }
+};
+
+
+export const checkOwner = async (linkId) => {
+      /*   const token = Buffer.from(`${apiKey}:${secretKey}`).toString('base64');*/
+      const options = {
+        method: 'POST',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': 'Basic ' + btoa(`${BELVO_CLIENT_ID}:${BELVO_SECRET_KEY}`)
+        }),
+        body: JSON.stringify({
+          "link": linkId,
+          "token": '123ab',
+          "save_data": false
+        })
+      };
+  
+      try {
+        const response = await fetch(BELVO_BASE_URL+'/owners/', options);
+        if (!response.ok) {
+            throw new Error('Failed to get owner');
+        }
+        
+        return await response.json();
+      } catch (error) {
+          console.error('Error to get owner:', error);
+          return [];
+      }
+}

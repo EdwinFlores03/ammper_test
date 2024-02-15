@@ -73,7 +73,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             height={32}
             src={"/images/ammper-logo.png"}
             alt="Logo"
-            priority
+            priority={true}
             style={{ width: "auto", height: "auto" }}
           />
         </Link>
