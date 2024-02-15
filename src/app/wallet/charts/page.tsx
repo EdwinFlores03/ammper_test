@@ -1,5 +1,7 @@
 'use client';
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
+
+import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
+
 
 export default function TransactionsPage() {
     const linkId = localStorage.getItem('link_id');

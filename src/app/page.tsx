@@ -19,7 +19,7 @@ export default function LoginPage(){
           localStorage.setItem('link_id', response.id);
           localStorage.setItem('user_data', JSON.stringify(response));
           localStorage.setItem('belvo_token', '123ab');
-          localStorage.setItem('isLoggedIn', true);
+          localStorage.setItem('isLoggedIn', 'true');
           
           // Redirigir
           router.push('/home');
@@ -52,7 +52,7 @@ export default function LoginPage(){
                     Ingrese con una cuenta de Belvo.
                   </p>
                 </div>
-                <FormAuth onSubmitForm={onSubmitLogin}/>
+                <FormAuth formValues={null} onSubmitForm={onSubmitLogin} />
               </div>
             </div>
         </div>

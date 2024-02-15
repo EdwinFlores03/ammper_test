@@ -4,9 +4,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { checkOwner } from "../../utils/belvo";
 
+interface Owner {
+  first_name: string;
+  last_name: string;
+  second_last_name: string;
+}
+
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [owner, setOwner] = useState({first_name:'sss'});
+  const [owner, setOwner] = useState<Owner[]>([]); 
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);

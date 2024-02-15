@@ -1,7 +1,7 @@
 'use client';
 import { Metadata } from "next";
-import Breadcrumb from "@/components/Breadcrumbs/Breadcrumb";
 import TableList from "./TableList";
+import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 
 export default function TransactionsPage() {
     const linkId = localStorage.getItem('link_id');
