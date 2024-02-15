@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 const FormAuth = ({formValues, onSubmitForm}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [flagSession, setFlagSession] = useState(false);
 
     useEffect( ()=>{
         if(formValues){
@@ -13,6 +14,7 @@ const FormAuth = ({formValues, onSubmitForm}) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setFlagSession(true);
         const formData = {username, password};
         onSubmitForm(formData);
     };
@@ -20,7 +22,7 @@ const FormAuth = ({formValues, onSubmitForm}) => {
  return (
     <form className="mt-8 space-y-6" onSubmit={handleSubmit} autoComplete='false'>
         <div>
-            <label htmlFor="email" className="block font-bold text-gray-700">
+            <label htmlFor="username" className="block font-bold text-gray-700">
             Usuario
             </label>
             <input
@@ -53,9 +55,10 @@ const FormAuth = ({formValues, onSubmitForm}) => {
         <div>
             <button
             type="submit"
-            className="w-full px-4 py-3 font-bold text-white bg-orange-500 rounded-md hover:bg-orange-600 focus:outline-none focus:shadow-outline-orange focus:border-orange-700"
+            disabled={flagSession}
+            className={`w-full px-4 py-3 disabled:opacity-${(flagSession)?'25':'100'} font-bold text-white bg-orange-500 rounded-md hover:bg-orange-${(flagSession)?'500':'600'} focus:outline-none focus:shadow-outline-orange focus:border-orange-${(flagSession)?'500':'700'}`}
             >
-            Iniciar Sesión
+                {(flagSession)?'Ingresando...':'Iniciar Sesión'}
             </button>
         </div>
     </form>

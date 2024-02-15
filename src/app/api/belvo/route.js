@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export const GET = async () => {
-    console.log("aaaaaa_SS: "+`${process.env.BELVO_BASE_URL}`);
+    // console.log("aaaaaa_SS: "+`${process.env.BELVO_BASE_URL}`);
       try {
         const response = await fetch(process.env.BELVO_BASE_URL+"/institutions/", {
           method: 'GET',
