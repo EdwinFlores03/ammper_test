@@ -96,7 +96,9 @@ export const registerLink = async (username, password) => {
     }
 }
 
-export const getTransactions = async (rowsPerPage, page, linkId, startDate, endDate) => {
+export const getTransactions = async (rowsPerPage, page, linkId, startDate, endDate, type) => {
+      // const queryCategory = (category.length > 0 && category != "")?"&category='"+category+"'":"";
+      const queryCategory = (type.length > 0 && type != "")?'&type__in='+type:"";
       const options = {
         method: 'GET',
         headers: new Headers({
@@ -106,7 +108,7 @@ export const getTransactions = async (rowsPerPage, page, linkId, startDate, endD
       };
  
      try {      
-        const response = await fetch(BELVO_BASE_URL+'/transactions/?page_size='+rowsPerPage+'&page='+page+'&link='+linkId+'&value_date__range=' + startDate + ',' + endDate, options);
+        const response = await fetch(BELVO_BASE_URL+'/transactions/?page_size='+rowsPerPage+'&page='+page+'&link='+linkId+'&value_date__range=' + startDate + ',' + endDate+queryCategory, options);
         if (!response.ok) {
           throw new Error('Error al obtener transacciones');
         }
@@ -117,7 +119,6 @@ export const getTransactions = async (rowsPerPage, page, linkId, startDate, endD
         return [];
      }
 }
-
 
 export const checkOwner = async (linkId) => {
       /*   const token = Buffer.from(`${apiKey}:${secretKey}`).toString('base64');*/
@@ -145,4 +146,79 @@ export const checkOwner = async (linkId) => {
           console.error('Error to get owner:', error);
           return [];
       }
+}
+
+export const getAllTransactions = async (rowsPerPage, linkId, startDate, endDate, type) => {
+  const queryType = (type.length > 0 && type != "")?'&type__in='+type:"";
+  const page = 1;
+  const options = {
+    method: 'GET',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': 'Basic ' + btoa(`${BELVO_CLIENT_ID}:${BELVO_SECRET_KEY}`)
+    })
+  };
+
+  try {
+      let nextPage = BELVO_BASE_URL+'/transactions/?page_size='+rowsPerPage+'&page='+page+'&link='+linkId+'&value_date__range=' + startDate + ',' + endDate+queryType;
+      let allTransactions = [];
+      let hasNextPage = true;
+      let response = null;
+
+      // while (hasNextPage) {
+          const transactionsResponse = await fetch(nextPage, options);
+          if (!transactionsResponse.ok) {
+            throw new Error('Error al obtener transacciones');
+          }
+          const transactionsData = await transactionsResponse.json();
+          response = transactionsData;
+          const transactions = transactionsData.results;
+          allTransactions = allTransactions.concat(transactions);
+
+          // Verificar si hay más páginas
+          if (transactionsData.next) {
+              nextPage = transactionsData.next;
+          } else {
+              hasNextPage = false;
+          }
+      // }
+      response.results = allTransactions;
+
+      return response;
+
+  } catch (error) {
+      console.error(error, "Error al obtener transacciones");
+      throw error;
+      return [];
+  }
+}
+
+
+export const postAllTransactions = async (linkId, startDate, endDate) => {
+  const options = {
+      method: 'POST',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': 'Basic ' + btoa(`${BELVO_CLIENT_ID}:${BELVO_SECRET_KEY}`)
+      }),
+      body: JSON.stringify({
+        "link": linkId,
+        "date_from": startDate,
+        "date_to": endDate,
+        "token": "1234ab",
+        "save_data": false
+      })
+  };
+
+  try {
+      const response = await fetch(BELVO_BASE_URL+'/transactions/', options);
+      if (!response.ok) {
+          throw new Error('Error al crear link');
+      }
+      return await response.json();
+  } catch (error) {
+      console.error(error, "Error al registrar link");
+      throw error;
+      return [];
+  }
 }

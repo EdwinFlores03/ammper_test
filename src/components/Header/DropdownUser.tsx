@@ -57,7 +57,7 @@ const DropdownUser = () => {
     const fetchData = async () => {
       const userDataStorage = JSON.parse(window.localStorage.getItem('userData'));
       const dataLinkId = userDataStorage.link_id;
-      console.log('LINKKKK: '+dataLinkId);
+      // console.log('LINKKKK: '+dataLinkId);
 
       const dataResponse = await checkOwner(dataLinkId);
       // console.log("Owner:",JSON.stringify(dataResponse));
