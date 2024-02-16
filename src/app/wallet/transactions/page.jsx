@@ -2,9 +2,16 @@
 import { Metadata } from "next";
 import TableList from "./TableList";
 import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
+import { useEffect, useState } from "react";
 
 export default function TransactionsPage() {
-    const linkId = localStorage.getItem('link_id');
+    const [linkId, setLinkId] = useState(null);
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const userDataStorage = JSON.parse(window.localStorage.getItem('userData'));
+            setLinkId(userDataStorage.link_id);
+        }
+      }, []);
 
     return (
         <>

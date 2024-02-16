@@ -1,10 +1,15 @@
-'use client';
-
+'use client'
+import { useEffect, useState } from "react";
 import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 
-
-export default function TransactionsPage() {
-    const linkId = localStorage.getItem('link_id');
+export default function ChartsPage() {
+    const [linkId, setLinkId] = useState(null);
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const userDataStorage = JSON.parse(window.localStorage.getItem('userData'));
+            setLinkId(userDataStorage.link_id);
+        }
+    }, []);
 
     return (
         <>

@@ -10,19 +10,14 @@ export default function DefaultLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-
   const router = useRouter();
 
   useEffect(() => {
     // Verifica si el usuario está autenticado
-    const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
-
-    // Si no está autenticado y no está en la página de inicio de sesión, redirige a la página de inicio de sesión
+    const userDataStorage = JSON.parse(localStorage.getItem('userData'));
+    const isLoggedIn = userDataStorage.isLoggedIn === 'true';
     if (!isLoggedIn) {
-      localStorage.removeItem('link_id');
-      localStorage.removeItem('user_data');
-      localStorage.removeItem('belvo_token');
-      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userData');
       router.push('/');
     }
   }, []);

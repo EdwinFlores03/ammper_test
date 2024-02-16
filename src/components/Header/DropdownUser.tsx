@@ -36,10 +36,7 @@ const DropdownUser = () => {
   });
 
   const logoutBtn = () => {
-      localStorage.removeItem('link_id');
-      localStorage.removeItem('user_data');
-      localStorage.removeItem('belvo_token');
-      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userData');
       router.push('/');
   };
 
@@ -55,7 +52,9 @@ const DropdownUser = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataResponse = await checkOwner(localStorage.getItem('link_id'));
+      const userDataStorage = JSON.parse(localStorage.getItem('userData'));
+      const linkId = userDataStorage.link_id;
+      const dataResponse = await checkOwner(linkId);
       // console.log("Owner:",JSON.stringify(dataResponse));
       setOwner(dataResponse);
     };
