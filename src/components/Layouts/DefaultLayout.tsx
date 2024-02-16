@@ -15,10 +15,12 @@ export default function DefaultLayout({
   useEffect(() => {
     // Verifica si el usuario está autenticado
     const userDataStorage = JSON.parse(localStorage.getItem('userData'));
-    const isLoggedIn = userDataStorage.isLoggedIn === 'true';
-    if (!isLoggedIn) {
-      localStorage.removeItem('userData');
-      router.push('/');
+    if (userDataStorage) {
+      const isLoggedIn = userDataStorage.isLoggedIn === 'true';
+      if (!isLoggedIn) {
+        localStorage.removeItem('userData');
+        router.push('/');
+      }
     }
   }, []);
 

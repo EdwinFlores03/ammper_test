@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: "",
 };
 
-export default function HomePage() {
+export default function DashboardPage() {
   return (
     <>
       <DefaultLayout>
