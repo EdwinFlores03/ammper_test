@@ -22,10 +22,12 @@ interface TransactionData {
 }
 
 export default function TableList({linkId}){
+
     const rowsPerPage = 15;
     const [data, setData] = useState<TransactionData>({ count: 0, results: [] });
     const [currentPage, setCurrentPage] = useState(1);
     const [flagState, setFlagState] = useState(false);
+    // const [linkId, setLinkId] = useState(null);
     //Fechas filtro
     const dateStart = moment().subtract(3, 'months').format('YYYY-MM-DD');
     const dateEnd = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -41,10 +43,20 @@ export default function TableList({linkId}){
         setDefaultDateEnd(dateSelected);
     };
 
+    // useEffect(() => {
+    //     const userDataStorage = JSON.parse(window.localStorage.getItem('userData'));
+    //     setLinkId(userDataStorage.link_id);
+    //     console.log(userDataStorage.link_id,'Siiiiiiiiii');
+                
+    // }, []);
+
     useEffect(() => {
+        console.log("entrooo 2:");
         setData({ count: 0, results: [] });        
         const fetchData = async () => {
             setFlagState(true);
+            console.log("VARIIIIIIIIII: "+linkId);
+            
             const datas = await getTransactions(rowsPerPage, currentPage, linkId, defaultDateStart, defaultDateEnd);
             setData(datas);
             setFlagState(false);

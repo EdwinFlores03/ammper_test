@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
@@ -12,7 +13,8 @@ interface Owner {
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [owner, setOwner] = useState<Owner[]>([]); 
+  const [owner, setOwner] = useState<Owner[]>([]);
+  const [linkId, setLinkId] = useState(null);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -36,7 +38,8 @@ const DropdownUser = () => {
   });
 
   const logoutBtn = () => {
-      localStorage.removeItem('userData');
+      window.localStorage.removeItem('userData');
+      window.localStorage.removeItem('link_id');
       router.push('/');
   };
 
@@ -52,9 +55,11 @@ const DropdownUser = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const userDataStorage = JSON.parse(localStorage.getItem('userData'));
-      const linkId = userDataStorage.link_id;
-      const dataResponse = await checkOwner(linkId);
+      const userDataStorage = JSON.parse(window.localStorage.getItem('userData'));
+      const dataLinkId = userDataStorage.link_id;
+      console.log('LINKKKK: '+dataLinkId);
+
+      const dataResponse = await checkOwner(dataLinkId);
       // console.log("Owner:",JSON.stringify(dataResponse));
       setOwner(dataResponse);
     };

@@ -31,7 +31,7 @@ export default function TablePaginate({ data, currentPage=1, itemsPerPage=10, ha
                         <a href="#" className="flex items-center justify-center px-3 h-8 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">5</a>
                     </li> */}
                     <li>
-                        <button onClick={handleClickNext} disabled={(currentPageNum >= maxPages)} className={`disabled px-8 py-3 text-white bg-blue-${(currentPageNum >= maxPages)?'300':'600'} focus:outline-none flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}>Siguiente</button>
+                        <button onClick={handleClickNext} disabled={(currentPageNum >= maxPages)} className={`disabled px-8 py-3 text-white bg-blue-${(currentPageNum >= maxPages)?'300':'600'} focus:outline-none flex items-center justify-center px-3 h-8 leading-tight border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white`}> Siguiente </button>
                     </li>
                 </ul>
             </nav>

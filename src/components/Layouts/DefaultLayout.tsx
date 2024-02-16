@@ -17,8 +17,10 @@ export default function DefaultLayout({
     const userDataStorage = JSON.parse(localStorage.getItem('userData'));
     if (userDataStorage) {
       const isLoggedIn = userDataStorage.isLoggedIn === 'true';
+      
       if (!isLoggedIn) {
         localStorage.removeItem('userData');
+        window.localStorage.removeItem('link_id');
         router.push('/');
       }
     }
