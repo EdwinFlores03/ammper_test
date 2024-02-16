@@ -15,6 +15,10 @@ export default function TransactionsPage() {
     const [loader, setLoader] = useState(true);
     const rowsPerPage = 1000;
     const [typeSelect, setTypeSelect] = useState('');
+    const [outFlow, setOutFlow] = useState('0.00');
+    const [inFlow, setInFlow] = useState('0.00');
+    const [transactions, setTransactions] = useState(0);
+    const [transactionsPending, setTransactionsPending] = useState(0);
 
     const dateStart = moment().subtract(3, 'months').format('YYYY-MM-DD');
     const dateEnd = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -41,6 +45,43 @@ export default function TransactionsPage() {
         }));
     };
 
+    const getTransactionsPending = (data) => {
+        const numPending = data.reduce((count, transaccion) => {
+            if (transaccion.status === "PENDING") {
+                return count + 1;
+            } else {
+                return count;
+            }
+        }, 0);
+        setTransactionsPending(numPending);
+    };
+    const getInFlow = (data) => {
+        const sumAmounts = data.reduce((total, transaccion) => {
+            if (transaccion.type === "INFLOW") {
+                return total + transaccion.amount;
+            } else {
+                return total;
+            }
+        }, 0);
+        
+        // Redondear la suma a dos decimales
+        const totalAmount = String(Math.round(sumAmounts * 100) / 100);
+        setInFlow(totalAmount);
+    };
+    const getOutFlow = (data) => {
+        const sumAmounts = data.reduce((total, transaccion) => {
+            if (transaccion.type === "OUTFLOW") {
+                return total + transaccion.amount;
+            } else {
+                return total;
+            }
+        }, 0);
+        
+        // Redondear la suma a dos decimales
+        const totalAmount = String(Math.round(sumAmounts * 100) / 100);
+        setOutFlow(totalAmount);
+    };
+
     useEffect(() => {
         const link_id = window.localStorage.getItem('link_id');
         setDataLinkId(link_id);
@@ -56,6 +97,10 @@ export default function TransactionsPage() {
             // setData(responseData);
 
             const responseData = await postAllTransactions(link_id, defaultDateStart, defaultDateEnd);
+            getTransactionsPending(responseData);
+            getInFlow(responseData);
+            getOutFlow(responseData);
+            setTransactions(responseData.length);
             setData(responseData);
             setLoader(false);
         } catch (error) {
@@ -98,6 +143,34 @@ export default function TransactionsPage() {
                     </div>
                 </div>
             </div>
+            <div className='col-span-12 rounded-sm border border-stroke bg-white p-7.5 shadow-default dark:border-strokedark dark:bg-boxdark'>
+                <div className='grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4 xl:gap-0'>
+                    <div className='flex items-center justify-center gap-2 border-b border-stroke pb-5 dark:border-strokedark xl:border-b-0 xl:border-r xl:pb-0'>
+                        <div>
+                            <h4 className='mb-0.5 text-xl font-semibold text-black dark:text-white md:text-title-lg'>${outFlow}</h4>
+                            <p className='text-sm font-medium'>Gastos totales</p>
+                        </div>
+                    </div>
+                    <div className='flex items-center justify-center gap-2 border-b border-stroke pb-5 dark:border-strokedark xl:border-b-0 xl:border-r xl:pb-0'>
+                        <div>
+                            <h4 className='mb-0.5 text-xl font-semibold text-black dark:text-white md:text-title-lg'>${inFlow}</h4>
+                            <p className='text-sm font-medium'>Ingresos totales</p>
+                        </div>
+                    </div>
+                    <div className='flex items-center justify-center gap-2 border-b border-stroke pb-5 dark:border-strokedark xl:border-b-0 xl:border-r xl:pb-0'>
+                        <div>
+                            <h4 className='mb-0.5 text-xl font-semibold text-black dark:text-white md:text-title-lg'>{transactions}</h4>
+                            <p className='text-sm font-medium'>No. Transacciones</p>
+                        </div>
+                    </div>
+                    <div className='flex items-center justify-center gap-2 border-b border-stroke pb-5 dark:border-strokedark sm:border-b-0 sm:pb-0 xl:border-r'>
+                        <div>
+                            <h4 className='mb-0.5 text-xl font-semibold text-black dark:text-white md:text-title-lg'>{transactionsPending}</h4>
+                            <p className='text-sm font-medium'>Transacciones pendientes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
                 {
                     loader 
                     ?
@@ -119,7 +192,7 @@ export default function TransactionsPage() {
                     </div>
 
                     :
-
+               
                     <div>
                         <div className="w-full grid md:grid-cols-2 sm:grid-cols-1 gap-4 mb-4">
                             <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
