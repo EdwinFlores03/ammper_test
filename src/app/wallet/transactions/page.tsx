@@ -1,24 +1,26 @@
 'use client';
 import { Metadata } from "next";
-import TableList from "./TableList";
 import Breadcrumb from "../../../components/Breadcrumbs/Breadcrumb";
 import { useEffect, useState } from "react";
+import Loader from "../../../components/common/Loader";
+import TableList from "../transactions/TableList";
 
 export default function TransactionsPage() {
-    const [linkId, setLinkId] = useState(null);
+    const [dataLinkId, setDataLinkId] = useState(null);
+    const [loader, setLoader] = useState(true);
+
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const userDataStorage = JSON.parse(window.localStorage.getItem('userData'));
-            setLinkId(userDataStorage.link_id);
-        }
-      }, []);
+        const link_id = window.localStorage.getItem('link_id');
+        setDataLinkId(link_id);
+        setLoader(false);
+    }, []);
 
     return (
         <>
             <Breadcrumb pagePrevius="Estado de cuenta" pageName="Transacciones" />
 
             <div className="rounded-sm border border-stroke bg-white px-5 pb-2.5 pt-6 shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 xl:pb-1">
-                <TableList linkId={linkId} />
+                {loader ? <Loader /> : <TableList linkId={dataLinkId} />}
             </div>
         </>
     );

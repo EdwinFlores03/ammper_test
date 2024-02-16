@@ -22,10 +22,12 @@ interface TransactionData {
 }
 
 export default function TableList({linkId}){
+
     const rowsPerPage = 15;
     const [data, setData] = useState<TransactionData>({ count: 0, results: [] });
     const [currentPage, setCurrentPage] = useState(1);
     const [flagState, setFlagState] = useState(false);
+    // const [linkId, setLinkId] = useState(null);
     //Fechas filtro
     const dateStart = moment().subtract(3, 'months').format('YYYY-MM-DD');
     const dateEnd = moment().subtract(1, 'days').format('YYYY-MM-DD');
@@ -41,10 +43,20 @@ export default function TableList({linkId}){
         setDefaultDateEnd(dateSelected);
     };
 
+    // useEffect(() => {
+    //     const userDataStorage = JSON.parse(window.localStorage.getItem('userData'));
+    //     setLinkId(userDataStorage.link_id);
+    //     console.log(userDataStorage.link_id,'Siiiiiiiiii');
+                
+    // }, []);
+
     useEffect(() => {
+        console.log("entrooo 2:");
         setData({ count: 0, results: [] });        
         const fetchData = async () => {
             setFlagState(true);
+            console.log("VARIIIIIIIIII: "+linkId);
+            
             const datas = await getTransactions(rowsPerPage, currentPage, linkId, defaultDateStart, defaultDateEnd);
             setData(datas);
             setFlagState(false);
@@ -204,7 +216,7 @@ export default function TableList({linkId}){
                                 {item.type}
                             </td>
                             <td className="px-6 py-4">
-                                <span className={`inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-${(item.status == 'PENDING' || item.status == 'pending')?'orange':'green'}-100 bg-${(item.status == 'PENDING' || item.status == 'pending')?'orange':'green'}-700 rounded`}>{item.status}</span>
+                                <span className={`inline-flex rounded-full bg-${(item.status == 'PENDING' || item.status == 'pending')?'warning':"success"} px-3 py-1 text-sm font-medium text-white hover:bg-opacity-90 rounded`}>{item.status}</span>
                             </td>
                         </tr>
                     ))}

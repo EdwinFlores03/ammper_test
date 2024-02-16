@@ -15,23 +15,26 @@ export default function LoginPage(){
       const {username, password} = formData;
       try {
           const response = await registerLink(username, password);
-          console.log('guardando',response.id);
+
           if (response.id) {
             //guardando en storage local
             const dataUser = {
               link_id: response.id,
               user_data:JSON.stringify(response),
               belvo_token:'123ab',
-              isLoggedIn:true
+              isLoggedIn:'true'
             };
+            localStorage.setItem('link_id', response.id);
             localStorage.setItem('userData', JSON.stringify(dataUser));
             setFlagSession(true);
             setErrorFlag(true);
             // Redirigir
             router.push('/home');
+            
           } else {
             setFlagSession(false);
             setErrorFlag(true);
+            console.log("NO entro");
           }
       } catch (error) {
           console.error('Error de inicio de sesión:', error);
