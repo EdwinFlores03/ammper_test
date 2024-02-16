@@ -15,12 +15,15 @@ export default function LoginPage(){
       try {
           const response = await registerLink(username, password);
           // console.log(response);
-          // Almacenar el token de acceso en el almacenamiento local
-          localStorage.setItem('link_id', response.id);
-          localStorage.setItem('user_data', JSON.stringify(response));
-          localStorage.setItem('belvo_token', '123ab');
-          localStorage.setItem('isLoggedIn', true);
-          
+          //guardando en storage local
+          const dataUser = {
+            link_id: response.id,
+            user_data:JSON.stringify(response),
+            belvo_token:'123ab',
+            isLoggedIn:true
+          };
+          localStorage.setItem('userData', JSON.stringify(dataUser));
+
           // Redirigir
           router.push('/home');
       } catch (error) {
@@ -52,7 +55,7 @@ export default function LoginPage(){
                     Ingrese con una cuenta de Belvo.
                   </p>
                 </div>
-                <FormAuth onSubmitForm={onSubmitLogin}/>
+                <FormAuth formValues={null} onSubmitForm={onSubmitLogin} />
               </div>
             </div>
         </div>

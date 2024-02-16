@@ -3,8 +3,7 @@ const BELVO_SECRET_KEY = "WP#gIcn_7gVDZpTiRYhnzjgL9fAF2TevwIGv9XH5QIj*ZVJR*a@hcL
 const BELVO_BASE_URL = "https://sandbox.belvo.com/api";
 
 export const getInstitutions = async () => {
-    console.log("aaaaaa_SS: "+`${process.env.BELVO_BASE_URL}`);
-    console.log('JSJSJSJJssS');
+    // console.log("aaaaaa_SS: "+`${process.env.BELVO_BASE_URL}`);
     try {
         const response = await fetch(BELVO_BASE_URL+"/institutions/", {
             method: 'GET',
@@ -24,7 +23,7 @@ export const getInstitutions = async () => {
         console.error('Error fetching institutions:', error);
         return [];
     }
-};
+}
 
 export const checkAccount = async (username, password) => {
 /*   const token = Buffer.from(`${apiKey}:${secretKey}`).toString('base64');*/
@@ -95,7 +94,7 @@ export const registerLink = async (username, password) => {
       throw error;
       return [];
     }
-};
+}
 
 export const getTransactions = async (rowsPerPage, page, linkId, startDate, endDate) => {
       const options = {
@@ -117,7 +116,7 @@ export const getTransactions = async (rowsPerPage, page, linkId, startDate, endD
         throw error;
         return [];
      }
-};
+}
 
 
 export const checkOwner = async (linkId) => {

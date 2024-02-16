@@ -4,9 +4,15 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { checkOwner } from "../../utils/belvo";
 
+interface Owner {
+  first_name: string;
+  last_name: string;
+  second_last_name: string;
+}
+
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [owner, setOwner] = useState({first_name:'sss'});
+  const [owner, setOwner] = useState<Owner[]>([]); 
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -30,10 +36,7 @@ const DropdownUser = () => {
   });
 
   const logoutBtn = () => {
-      localStorage.removeItem('link_id');
-      localStorage.removeItem('user_data');
-      localStorage.removeItem('belvo_token');
-      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('userData');
       router.push('/');
   };
 
@@ -49,7 +52,9 @@ const DropdownUser = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const dataResponse = await checkOwner(localStorage.getItem('link_id'));
+      const userDataStorage = JSON.parse(localStorage.getItem('userData'));
+      const linkId = userDataStorage.link_id;
+      const dataResponse = await checkOwner(linkId);
       // console.log("Owner:",JSON.stringify(dataResponse));
       setOwner(dataResponse);
     };

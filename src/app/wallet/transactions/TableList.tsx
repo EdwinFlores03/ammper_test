@@ -1,13 +1,29 @@
 // Página de inicio de sesión
 import React, { useEffect, useState } from 'react';
-import { getTransactions } from "@/utils/belvo";
+import { getTransactions } from "../../../utils/belvo";
 import TablePaginate from './TablePaginate';
 import moment from 'moment';
 import FlatpickrComponent from '../../../components/Forms/DatePicker/FlatpickrComponent';
 
+interface Transaction {
+    description: string;
+    reference: string;
+    category: string;
+    amount: number;
+    currency: string;
+    value_date: string;
+    type: string;
+    status: string;
+}
+
+interface TransactionData {
+    count: number;
+    results: Transaction[];
+}
+
 export default function TableList({linkId}){
-    const rowsPerPage = 15; 
-    const [data, setData] = useState([]);
+    const rowsPerPage = 15;
+    const [data, setData] = useState<TransactionData>({ count: 0, results: [] });
     const [currentPage, setCurrentPage] = useState(1);
     const [flagState, setFlagState] = useState(false);
     //Fechas filtro
@@ -26,7 +42,7 @@ export default function TableList({linkId}){
     };
 
     useEffect(() => {
-        setData([]);        
+        setData({ count: 0, results: [] });        
         const fetchData = async () => {
             setFlagState(true);
             const datas = await getTransactions(rowsPerPage, currentPage, linkId, defaultDateStart, defaultDateEnd);
@@ -39,7 +55,6 @@ export default function TableList({linkId}){
       }, [currentPage,defaultDateStart,defaultDateEnd]);
 
     if (!data || !data.results) {
-        // Si data o data.results es null o undefined, retornar un mensaje de carga o un componente alternativo
         return (
             <>
                 <div className="grid grid-cols-4 gap-4 mb-4">
