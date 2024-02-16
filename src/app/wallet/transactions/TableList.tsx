@@ -216,7 +216,7 @@ export default function TableList({linkId}){
                                 {item.type}
                             </td>
                             <td className="px-6 py-4">
-                                <span className={`inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-${(item.status == 'PENDING' || item.status == 'pending')?'orange':'green'}-100 bg-${(item.status == 'PENDING' || item.status == 'pending')?'orange':'green'}-700 rounded`}>{item.status}</span>
+                                <span className={`inline-flex rounded-full bg-${(item.status == 'PENDING' || item.status == 'pending')?'warning':"success"} px-3 py-1 text-sm font-medium text-white hover:bg-opacity-90 rounded`}>{item.status}</span>
                             </td>
                         </tr>
                     ))}
