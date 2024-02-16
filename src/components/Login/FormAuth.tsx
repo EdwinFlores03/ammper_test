@@ -16,7 +16,7 @@ const FormAuth = ({formValues, onSubmitForm}) => {
         e.preventDefault();
         setFlagSession(true);
         const formData = {username, password};
-        onSubmitForm(formData);
+        onSubmitForm(formData, setFlagSession);
     };
 
  return (
