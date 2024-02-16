@@ -23,6 +23,8 @@ export default function DefaultLayout({
         window.localStorage.removeItem('link_id');
         router.push('/');
       }
+    }else{
+        router.push('/');
     }
   }, []);
 
